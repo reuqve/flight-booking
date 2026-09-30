@@ -27,4 +27,22 @@ class CartController extends Controller
             'message' => 'Product add to cart',
         ], 201);
     }
+
+    public function index(Request $request, ) {
+        $cart = Cart::where('user_id', $request->user()->id)
+            ->with('product')
+            ->get();
+
+        return response()->json(
+            $cart->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'name' => $item->product->name,
+                    'description' => $item->product->description,
+                    'price' => $item->product->price,
+                ];
+            })
+        );
+    }
 }

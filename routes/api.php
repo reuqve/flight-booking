@@ -15,5 +15,8 @@ Route::get('/logout', [AuthController::class,'logout'])
 Route::get('/profile', [AuthController::class,'profile'])
     ->middleware(['auth:sanctum']);
 
+
+Route::get('/cart', [CartController::class,'index'])
+    ->middleware(['auth:sanctum']);
 Route::post('/cart/{product_id}', [CartController::class,'store'])
     ->middleware(['auth:sanctum']);
