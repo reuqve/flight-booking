@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/signup', [AuthController::class,'signup']);
 Route::post('login', [AuthController::class,'login']);
 Route::get('/products', [ProductController::class,'index']);
+Route::get('/logout', [AuthController::class,'logout'])
+    ->middleware(['auth:sanctum']);
 
 Route::get('/profile', [AuthController::class,'profile'])
     ->middleware(['auth:sanctum']);
