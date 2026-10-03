@@ -24,5 +24,7 @@ Route::delete('/cart/{id}', [CartController::class,'destroy'])
 Route::post('/cart/{product_id}', [CartController::class,'store'])
     ->middleware(['auth:sanctum']);
 
+Route::get('/order', [OrderController::class, 'index'])
+    ->middleware('auth:sanctum');
 Route::post('/order', [OrderController::class, 'store'])
     ->middleware('auth:sanctum');

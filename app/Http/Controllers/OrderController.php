@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class OrderController extends Controller
 {
     public function store(Request $request) {
@@ -43,5 +45,22 @@ class OrderController extends Controller
             'order_id' => $order->id,
             'message' => 'Order is processed',
         ], 201);
+    }
+
+    public function index(Request $request) {
+        $orders = Order::where('user_id', $request->user()->id)
+            ->with('items')
+            ->get();
+
+        return response()->json(
+            $orders->map(function($order) {
+
+                return [
+                    'id' => $order->id,
+                    'products' => $order->items->pluck('product_id')->values(),
+                    'order_price' => $order->items->sum('price'),
+                ];
+            }), 200
+        );
     }
 }
