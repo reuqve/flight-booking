@@ -28,3 +28,6 @@ Route::get('/order', [OrderController::class, 'index'])
     ->middleware('auth:sanctum');
 Route::post('/order', [OrderController::class, 'store'])
     ->middleware('auth:sanctum');
+
+Route::patch('/profile', [AuthController::class, 'update'])
+    ->middleware('auth:sanctum');

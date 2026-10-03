@@ -59,6 +59,19 @@ class AuthController extends Controller
         return response()->json($request->user());
     }
 
+    public function update(Request $request) {
+        $validated = $request->validate([
+            'fio' => ['sometimes', 'string'],
+            'avatar' => ['sometimes', 'string'],
+        ]);
+
+        $user = $request->user();
+        $user->update($validated);
+
+        return response()->json([
+            'message' => 'data updated successfully',
+        ], 200);
+    }
     public function logout(Request $request) {
         $request->user()->currentAccessToken()->delete();
 
