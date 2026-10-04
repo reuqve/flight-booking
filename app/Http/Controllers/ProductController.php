@@ -25,4 +25,29 @@ class ProductController extends Controller
             "message"=> "Product added",
         ], 201);
     }
+
+    public function update(Request $request, $id) {
+        $product = Product::find($id);
+
+        if(!$product) {
+            return response()->json([
+                "message"=> "not found",
+            ],404);                
+        }
+
+        $validated = $request->validate([
+            "name" => ["sometimes", "string"],
+            "description" => ["sometimes", "string"],
+            "price" => ["sometimes", "numeric"],
+        ]);
+
+        $product->update($validated);
+
+        return response()->json([
+            "id" => $product->id,
+            "name" => $product->name,
+            "description" => $product->description,
+            "price" => $product->price
+        ], 200);
+    }
 }

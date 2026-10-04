@@ -35,3 +35,5 @@ Route::patch('/profile', [AuthController::class, 'update'])
 /* функционал админа */
 Route::post('/product', [ProductController::class,'store'])
     ->middleware(['auth:sanctum', 'admin']);
+Route::patch('/product/{id}', [ProductController::class,'update'])
+    ->middleware(['auth:sanctum', 'admin']);
