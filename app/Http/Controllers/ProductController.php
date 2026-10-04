@@ -8,7 +8,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     public function index() {
-        return response()->json([Product::all()]);
+        return response()->json(Product::all());
     }
 
     public function store(Request $request) {
