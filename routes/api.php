@@ -37,3 +37,5 @@ Route::post('/product', [ProductController::class,'store'])
     ->middleware(['auth:sanctum', 'admin']);
 Route::patch('/product/{id}', [ProductController::class,'update'])
     ->middleware(['auth:sanctum', 'admin']);
+Route::delete('/product/{id}', [ProductController::class,'destroy'])
+    ->middleware(['auth:sanctum', 'admin']);

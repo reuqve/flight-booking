@@ -50,4 +50,20 @@ class ProductController extends Controller
             "price" => $product->price
         ], 200);
     }
+
+    public function destroy($id) {
+        $product = Product::find($id);
+
+        if(!$product) {
+            return response()->json([
+                "message" => "not found",
+            ],404);
+        }
+
+        $product->delete();
+
+        return response()->json([
+            "message" => "Product removed"
+        ], 200);
+    }
 }
