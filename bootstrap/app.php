@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,5 +32,14 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'message'=> 'Login failed',
             ], 403);
+        });
+
+        $exceptions->render(function (ValidationException $exception) {
+            $field = array_key_first($exception->errors());
+
+            return response()->json([
+                'message'=> 'Validation error',
+                $field => $exception->errors()[$field][0],
+            ], 422);
         });
     })->create();
