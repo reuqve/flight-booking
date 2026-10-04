@@ -1,0 +1,27 @@
+services:
+  app:
+    env_file:
+      - ../project/.env
+
+    build:
+      context: ../project
+      dockerfile: Dockerfile
+
+    container_name: flight-booking-app
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ../project/database:/var/www/database
+      - ../project/storage:/var/www/storage
+
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/database/database.sqlite
+
+    restart: unless-stopped
