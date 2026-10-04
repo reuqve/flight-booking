@@ -31,3 +31,7 @@ Route::post('/order', [OrderController::class, 'store'])
 
 Route::patch('/profile', [AuthController::class, 'update'])
     ->middleware('auth:sanctum');
+
+/* функционал админа */
+Route::post('/product', [ProductController::class,'store'])
+    ->middleware(['auth:sanctum', 'admin']);
