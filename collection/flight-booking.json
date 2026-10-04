@@ -1,0 +1,661 @@
+{
+  "info": {
+    "_postman_id": "d770a2a1-4093-4254-a2d1-8df1eb541968",
+    "name": "flight-booking",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58423282",
+    "_collection_link": "https://go.postman.co/collection/58423282-d770a2a1-4093-4254-a2d1-8df1eb541968?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "profile",
+          "item": [
+            {
+              "name": "profile update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{user_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fio\": \"Updated User\",\n  \"avatar\": \"avatar.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/profile",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "profile"
+                  ]
+                },
+                "description": "Обновляет данные профиля авторизованного пользователя. Требуется Bearer Token.\n\nBody: fio и avatar передаются при необходимости.\n\nУспешный ответ: 200, data updated successfully.  \nБез токена: 403, Login failed.  \nПри ошибке валидации: 422, Validation error."
+              },
+              "response": []
+            },
+            {
+              "name": "profile show",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{user_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/profile",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "profile"
+                  ]
+                },
+                "description": "Возвращает профиль текущего авторизованного пользователя. Требуется Bearer Token.\n\nУспешный ответ: 200 с данными пользователя.\nБез токена: 403, Login failed."
+              },
+              "response": []
+            },
+            {
+              "name": "profile show incorrect",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/profile",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "profile"
+                  ]
+                },
+                "description": "Проверка доступа к профилю без Bearer Token.\n\nОжидаемый ответ: 403.\nBody: {\"message\":\"Login failed\"}."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fio\": \"Test User\",\n  \"email\": \"test@flight.ru\",\n  \"password\": \"password\",\n  \"avatar\": \"default.png\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/signup",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "signup"
+              ]
+            },
+            "description": "Регистрация нового пользователя.\n\nBody: fio, email, password и необязательный avatar.\nНовый пользователь получает роль client.\n\nУспешный ответ: 201 с token и данными пользователя.\nПри ошибке валидации: 422, Validation error."
+          },
+          "response": []
+        },
+        {
+          "name": "login correct",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@flight.ru\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Авторизация обычного пользователя.\n\nДанные для теста: user@flight.ru / password.\n\nУспешный ответ: 200 с token и данными пользователя.\nПри неверных данных: 403, {\"message\":\"Login failed\"}."
+          },
+          "response": []
+        },
+        {
+          "name": "login incorrect",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@flight.ru\",\n  \"password\": \"wrongpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Проверка авторизации с неверным паролем.\n\nОжидаемый ответ: 403.\nBody: {\"message\":\"Login failed\"}."
+          },
+          "response": []
+        },
+        {
+          "name": "logout test",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/logout",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "logout"
+              ]
+            },
+            "description": "Выход из аккаунта текущего пользователя.\n\nТребуется Bearer Token. При успешном запросе текущий Sanctum-токен удаляется.\n\nУспешный ответ: 200."
+          },
+          "response": []
+        },
+        {
+          "name": "logout test without token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/logout",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "logout"
+              ]
+            },
+            "description": "Проверка выхода без авторизации.\n\nBearer Token не передаётся.\n\nОжидаемый ответ: 403.\nBody: {\"message\":\"Login failed\"}."
+          },
+          "response": []
+        },
+        {
+          "name": "login ADMIN",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@flight.ru\",\n  \"password\": \"QWEasd123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Авторизация администратора.\n\nДанные для теста: admin@flight.ru / QWEasd123.\n\nУспешный ответ: 200 с token и данными пользователя с ролью admin.\nПри неверных данных: 403, Login failed."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cart",
+      "item": [
+        {
+          "name": "get cart products",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/cart",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "cart"
+              ]
+            },
+            "description": "Возвращает товары из корзины текущего пользователя.\n\nТребуется Bearer Token.\n\nУспешный ответ: 200 с массивом товаров корзины.\nБез токена: 403, Login failed."
+          },
+          "response": []
+        },
+        {
+          "name": "product add to cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/cart/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "cart",
+                "2"
+              ]
+            },
+            "description": "Добавляет товар в корзину текущего пользователя.\n\nВ URL передаётся product_id. Требуется Bearer Token.\n\nУспешный ответ: 201, Product add to card.\nЕсли товара нет: 404, Not found.\nБез авторизации: 403, Login failed."
+          },
+          "response": []
+        },
+        {
+          "name": "delete product from cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/cart/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "cart",
+                "2"
+              ]
+            },
+            "description": "Удаляет товар из корзины текущего пользователя.\n\nВ URL передаётся id элемента корзины. Требуется Bearer Token.\n\nУспешный ответ: 200, Item removed from cart.\nЕсли элемента нет: 404, Not found.\nЕсли элемент принадлежит другому пользователю: 403, Forbidden for you."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "item": [
+        {
+          "name": "post order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/order",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "order"
+              ]
+            },
+            "description": "Создаёт заказ из всех товаров текущей корзины.\n\nТребуется Bearer Token. После создания заказа корзина очищается.\n\nУспешный ответ: 201 с order_id и сообщением Order is processed.\nЕсли корзина пустая: 422 с сообщением Cart is empty."
+          },
+          "response": []
+        },
+        {
+          "name": "get order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/order",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "order"
+              ]
+            },
+            "description": "Возвращает историю заказов текущего пользователя.\n\nТребуется Bearer Token.\n\nУспешный ответ: 200. Для каждого заказа возвращаются id, список product_id и общая стоимость заказа."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin func",
+      "item": [
+        {
+          "name": "create product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"SU-303 Москва - Казань\",\n  \"description\": \"Рейс SU-303, Вылет 18:00, Эконом класс\",\n  \"price\": 3500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/product",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "product"
+              ]
+            },
+            "description": "Создаёт новый рейс. Доступ только для администратора с Bearer Token.\n\nBody: name, description, price - обязательные поля.\n\nУспешный ответ: 201. Пример ответа: {\"id\":5,\"message\":\"Product added\"}.  \nБез авторизации: 403, Login failed.  \nДля обычного пользователя: 403, Forbidden for you.  \nПри ошибке валидации: 422, Validation error."
+          },
+          "response": []
+        },
+        {
+          "name": "update product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 67\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/product/6",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "product",
+                "6"
+              ]
+            },
+            "description": "Изменяет данные существующего рейса. Доступ только для администратора с Bearer Token.\n\nPATCH позволяет передавать только те поля, которые нужно изменить.\n\nУспешный ответ: 200 с обновлённым объектом рейса.  \nЕсли рейс не найден: 404, Not found.  \nБез авторизации: 403, Login failed.  \nДля обычного пользователя: 403, Forbidden for you.  \nПри ошибке валидации: 422, Validation error."
+          },
+          "response": []
+        },
+        {
+          "name": "delete product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/product/6/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "product",
+                "6",
+                ""
+              ]
+            },
+            "description": "Удаляет существующий рейс. Доступ только для администратора с Bearer Token.\n\nУспешный ответ: 200, Product removed.\nЕсли рейс не найден: 404, Not found.\nБез авторизации: 403, Login failed.\nДля обычного пользователя: 403, Forbidden for you."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "item": [
+        {
+          "name": "products list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/products",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "Возвращает список всех доступных рейсов.\n\nАвторизация не требуется.\n\nУспешный ответ: 200 с массивом рейсов. Каждый рейс содержит id, name, description и price."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "user_token",
+      "value": ""
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    }
+  ]
+}
